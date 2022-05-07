@@ -30,9 +30,9 @@ interface CharBoxProps {
 function CharBox ({value,state}:CharBoxProps){
     const stateStyles = state == null ? '' : charStateStyles[state]
     return(
-        <div className={`inline-block border-2 border border-gray-500 p-4  uppercase font-bold text-2xl text-center ${stateStyles}`}>
+        <span className={`border-2 border border-gray-500 px-2  py-3 uppercase font-semibold text-4xl text-center before:inline-block before:content-['_'] ${stateStyles}`}>
             {value}
-        </div>
+        </span>
     )
 
 }
