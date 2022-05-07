@@ -2,6 +2,7 @@ import WordRow from "./components/WordRow";
 import React, {useEffect, useRef, useState} from "react";
 import {useStore} from "./store";
 import {isValidWord, LETTER_LENGTH} from "./word-utils";
+import Keyboard from "./components/Keyboard";
 
 
 const NUMBER_OF_GUESS = 6
@@ -55,6 +56,7 @@ function App() {
                     <WordRow key={index} letters={guess} result = {result} className={showInvalidGuess && index === curRow ? 'animate-bounce':''}/>
                 ))}
             </main>
+            <Keyboard/>
             {isGameOver && (
                 <div role="modal"
                 className="absolute bg-white rounded border border-gray-500 text-center left-0 right-0 top-1/4 p-6 w-1/4 mx-auto">
