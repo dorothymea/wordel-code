@@ -1,5 +1,5 @@
 import WordRow from "./components/WordRow";
-import React, {useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {useStore} from "./store";
 import {LETTER_LENGTH} from "./word-utils";
 
@@ -8,16 +8,7 @@ const NUMBER_OF_GUESS = 6
 
 function App() {
     const state = useStore()
-    const [guess,setGuess] = useState('')
-    const onChange = (e:React.ChangeEvent<HTMLInputElement>)=>{
-        const newGuess = e.target.value
-        if(newGuess.length === LETTER_LENGTH){
-            state.addGuess(newGuess)
-            setGuess('')
-            return
-        }
-        setGuess(newGuess)
-    }
+    const [guess,setGuess] = useGuess()
     let rows = [...state.rows]
     if(rows.length < NUMBER_OF_GUESS ){
         rows.push({guess})
@@ -32,15 +23,6 @@ function App() {
         <div  className="mx-auto w-96">
             <header className="border-b border-gray-500 pb-2 my-2">
                 <h1 className="text-4xl text-center">Wordle </h1>
-                <div>
-                    <input
-                        type="text"
-                        value={guess}
-                        className="w-1/2 border-2 border-gray-500"
-                        onChange={onChange}
-                        disabled ={isGameOver}
-                    />
-                </div>
             </header>
             <main className="grid grid-rows-6 gap-4">
                 {rows.map(({guess,result},index)=>(
@@ -60,5 +42,58 @@ function App() {
         </div>
     )
 }
+
+function useGuess(){
+    const addGuess = useStore(s => s.addGuess)
+    const guessState = useState('')
+    const [guess,setGuess] = guessState
+    const preGuess = usePrevious(guess)
+
+    const onKeyDown = (e:KeyboardEvent)=>{
+
+        setGuess((curGuess)=>{
+            let letter = e.key
+
+            const newGuess = letter.length === 1 && curGuess.length !== LETTER_LENGTH ? curGuess + letter : curGuess
+
+            switch (e.key){
+                case 'Backspace':
+                    return newGuess.slice(0,-1)
+                case 'Enter':
+                    if(newGuess.length === LETTER_LENGTH){
+                        return ''
+                    }
+            }
+            if(newGuess.length === LETTER_LENGTH){return newGuess}
+            return newGuess
+        })
+
+    }
+
+    useEffect(()=>{
+        document.addEventListener('keydown',onKeyDown)
+        return ()=>{
+            document.addEventListener('keydown',onKeyDown)
+        }
+    },[])
+
+    useEffect(()=>{
+        if(guess.length ===0 && preGuess?.length ===LETTER_LENGTH){
+            addGuess(preGuess)
+        }
+    },[guess])
+
+    return guessState
+}
+function usePrevious<T>(value:T):T{
+    const ref:any = useRef<T>()
+
+    useEffect(()=>{
+        ref.current = value
+    },[value])
+
+    return ref.current
+}
+
 
 export default App
