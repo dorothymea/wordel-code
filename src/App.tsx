@@ -3,6 +3,7 @@ import React, {useEffect, useRef, useState} from "react";
 import {useStore} from "./store";
 import {isValidWord, LETTER_LENGTH} from "./word-utils";
 import Keyboard from "./components/Keyboard";
+import Help from "./components/Help";
 
 const NUMBER_OF_GUESS = 6
 
@@ -10,6 +11,10 @@ function App() {
     const state = useStore()
     console.log(state.answer)
     const [guess,setGuess,addGuessLetter] = useGuess()
+    const [isHelpVisible,setHelp] = useState(false)
+    const callHelp = () =>{
+        setHelp(!isHelpVisible)
+    }
 
     const [showInvalidGuess,setInvalidGuess] = useState(false)
     useEffect(()=>{
@@ -47,14 +52,17 @@ function App() {
 
     return (
         <div  className="w-96 cell:w-90">
-            <header className="border-b border-gray-500 pb-2 my-2 cell:mt-0.5">
-                <h1 className="text-4xl text-center">Wordle </h1>
+            <header className="border-b border-gray-500 flex flex-row justify-between pb-2 my-2 cell:mt-0.5">
+                <button className="border border-black w-10 h-10 font-semibold text-3xl rounded-full" onClick={callHelp}>?</button>
+                <h1 className="text-4xl">Wordle </h1>
+                <button className="w-10 h-10 opacity-0">1</button>
             </header>
             <main className="grid grid-rows-6 gap-4 pad:mt-5">
                 {rows.map(({guess,result},index)=>(
                     <WordRow key={index} letters={guess} result = {result} className={showInvalidGuess && index === curRow ? 'animate-bounce':''}/>
                 ))}
             </main>
+
             <div className="mt-0 pad:mt-4">
                 <Keyboard onClick = {(letter) => {
                     addGuessLetter(letter)
