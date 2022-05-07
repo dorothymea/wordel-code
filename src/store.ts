@@ -1,5 +1,5 @@
 import create from "zustand"
-import { persist } from "zustand/middleware"
+import {persist} from "zustand/middleware"
 import {computeGuess, getRandomWord, LetterState} from "./word-utils";
 
 interface StoreState{
@@ -7,6 +7,7 @@ interface StoreState{
     rows:GuessRow[];
     addGuess:(guess:string) =>void;
     newGame:()=> void;
+    gameState:'playing'|'win'|'lose'
 }
 interface GuessRow{
     guess:string;
@@ -18,21 +19,28 @@ export const useStore = create<StoreState>(
         (set, get) => ({
             answer: getRandomWord(),
             rows:[],
+            gameState:'playing',
             addGuess:(guess:string) =>{
+                const result = computeGuess(guess,get().answer)
+                const didWin = result.every(i=> i === LetterState.Match)
+                const rows = [
+                    ...get().rows,
+                    {
+                        guess,
+                        result
+                    }
+                ]
+
                 set((state) =>({
-                    rows:[
-                        ...state.rows,
-                        {
-                            guess,
-                            result:computeGuess(guess,state.answer)
-                        }
-                    ]
+                    rows,
+                    gameState:didWin ? 'win':rows.length ===6 ? 'lose':'playing'
                 }))
             } ,
             newGame:()=>{
                 set({
                     answer:getRandomWord(),
-                    rows:[]
+                    rows:[],
+                    gameState:'playing'
                 })
             }
         }),

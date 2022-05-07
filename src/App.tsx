@@ -25,7 +25,7 @@ function App() {
 
     const guessesRemaining = NUMBER_OF_GUESS - rows.length
     rows = rows.concat(Array(guessesRemaining).fill(''))
-    const isGameOver = state.rows.length === NUMBER_OF_GUESS
+    const isGameOver = state.gameState !== 'playing'
 
 
     return (
