@@ -48,7 +48,7 @@ function App() {
     return (
         <div  className="w-96 cell:w-90">
             <header className="border-b border-gray-500 pb-2 my-2">
-                <h1 className="text-4xl text-center">Wordle </h1>
+                <h1 className="text-4xl text-center">Wordel </h1>
             </header>
             <main className="grid grid-rows-6 gap-4 pad:mt-5">
                 {rows.map(({guess,result},index)=>(
