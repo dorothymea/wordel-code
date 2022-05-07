@@ -9,6 +9,7 @@ const NUMBER_OF_GUESS = 6
 
 function App() {
     const state = useStore()
+    console.log(state.answer)
     const [guess,setGuess,addGuessLetter] = useGuess()
 
     const [showInvalidGuess,setInvalidGuess] = useState(false)
@@ -43,7 +44,6 @@ function App() {
 
     const guessesRemaining = NUMBER_OF_GUESS - rows.length
     rows = rows.concat(Array(guessesRemaining).fill(''))
-    const isGameOver = state.gameState !== 'playing'
 
 
     return (
@@ -56,14 +56,16 @@ function App() {
                     <WordRow key={index} letters={guess} result = {result} className={showInvalidGuess && index === curRow ? 'animate-bounce':''}/>
                 ))}
             </main>
-            <Keyboard onClick = {(letter) => {
-                addGuessLetter(letter)
-            }}/>
+            <div className="mt-3">
+                <Keyboard onClick = {(letter) => {
+                    addGuessLetter(letter)
+                }}/>
+            </div>
             {state.gameState === 'lose' && (
                 <div role="modal"
                 className="absolute bg-white rounded border border-gray-500 text-center left-0 right-0 top-1/4 p-6 w-1/2 mx-auto">
-                    Game Over!
-                    <p>The answer is <strong>{state.answer}</strong></p>
+                    <p className="text-2xl ">Game Over!</p>
+                    <p className="text-2xl ">The answer is <strong>{state.answer}</strong></p>
                     <button
                         onClick={state.newGame}
                     className="block border rounded border-green-400 bg-green-400 p-2 mt-4 mx-auto shadow"
@@ -72,8 +74,9 @@ function App() {
             )}
             {state.gameState === 'win' && (
                 <div role="modal"
-                     className="absolute bg-white rounded border border-gray-500 text-center left-0 right-0 top-1/4 p-6 w-1/2 mx-auto">
-                    You win in <strong>{state.rows.length}</strong> attempt(s)!
+                     className="absolute bg-white rounded border border-gray-500 text-center  left-0 right-0 top-1/4 p-6 w-1/2 mx-auto">
+                    <p className="text-2xl ">You win in <strong>{state.rows.length}</strong> attempt(s)!</p>
+
                     <button
                         onClick={state.newGame}
                         className="block border rounded border-green-400 bg-green-400 p-2 mt-4 mx-auto shadow"

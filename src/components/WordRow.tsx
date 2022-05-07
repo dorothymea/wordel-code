@@ -1,8 +1,5 @@
 import { LETTER_LENGTH, LetterState} from "../word-utils";
 
-
-
-
 interface WordRowProps{
     letters:string;
     result?:LetterState[];
@@ -14,7 +11,6 @@ function WordRow({letters:lettersProp = '',result=[],className=''}:WordRowProps)
     const letters = lettersProp
         .split('')
         .concat(Array(lettersRemaining).fill(''))
-
 
     return (
         <div className={`grid grid-cols-5 gap-4 ${className}`}>
@@ -35,13 +31,14 @@ function CharBox ({value,state}:CharBoxProps){
             {value}
         </span>
     )
-
 }
+
 const charStateStyles = {
     [LetterState.Miss]:'bg-gray-400 border-gray-400',
     [LetterState.Present]:'bg-yellow-400 border-yellow-400',
     [LetterState.Match]:'bg-green-400 border-green-400'
 }
+
 export default WordRow
 
 

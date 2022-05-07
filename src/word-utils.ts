@@ -7,7 +7,7 @@ export enum LetterState{
     Match
 }
 const word = getRandomWord()
-console.log(word)
+
 function getRandomWord():string{
     return wordBank[Math.floor(Math.random() * wordBank.length)]
 }

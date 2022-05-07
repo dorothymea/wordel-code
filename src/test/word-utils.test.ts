@@ -1,6 +1,6 @@
 
 import { describe, expect, test } from 'vitest';
-import {computeGuess, isValidWord, LetterState} from './word-utils';
+import {computeGuess, isValidWord, LetterState} from '../word-utils';
 
 describe('computeGuess', () => {
     test('works with match and presents', () => {
