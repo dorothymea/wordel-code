@@ -59,7 +59,7 @@ function App() {
             <Keyboard/>
             {isGameOver && (
                 <div role="modal"
-                className="absolute bg-white rounded border border-gray-500 text-center left-0 right-0 top-1/4 p-6 w-1/4 mx-auto">
+                className="absolute bg-white rounded border border-gray-500 text-center left-0 right-0 top-1/4 p-6 w-1/2 mx-auto">
                     Game Over!
                     <button
                         onClick={state.newGame}
