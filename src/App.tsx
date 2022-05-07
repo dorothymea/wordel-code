@@ -60,13 +60,24 @@ function App() {
                 console.log(1)
                 addGuessLetter(letter)
             }}/>
-            {isGameOver && (
+            {state.gameState === 'lose' && (
                 <div role="modal"
                 className="absolute bg-white rounded border border-gray-500 text-center left-0 right-0 top-1/4 p-6 w-1/2 mx-auto">
                     Game Over!
+                    <p>The answer is <strong>{state.answer}</strong></p>
                     <button
                         onClick={state.newGame}
                     className="block border rounded border-green-400 bg-green-400 p-2 mt-4 mx-auto shadow"
+                    >Try Again</button>
+                </div>
+            )}
+            {state.gameState === 'win' && (
+                <div role="modal"
+                     className="absolute bg-white rounded border border-gray-500 text-center left-0 right-0 top-1/4 p-6 w-1/2 mx-auto">
+                    You win in <strong>{state.rows.length}</strong> attempt(s)!
+                    <button
+                        onClick={state.newGame}
+                        className="block border rounded border-green-400 bg-green-400 p-2 mt-4 mx-auto shadow"
                     >New Game</button>
                 </div>
             )}
