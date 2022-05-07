@@ -20,12 +20,10 @@ const keyStateStyles = {
 
 function Keyboard({onClick:onClickProp}:KeyboardProps){
     const keyboardLetterSate = useStore((s) => s.keyboardLetterState)
-    console.log(keyboardLetterSate);
 
     const onClick = (e:React.MouseEvent<HTMLButtonElement>) => {
         const {textContent,innerHTML} = e.currentTarget
         onClickProp(textContent!)
-        console.log(textContent)
     }
     return (
         <div className="flex flex-col">

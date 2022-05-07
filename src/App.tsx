@@ -57,7 +57,6 @@ function App() {
                 ))}
             </main>
             <Keyboard onClick = {(letter) => {
-                console.log(1)
                 addGuessLetter(letter)
             }}/>
             {state.gameState === 'lose' && (
