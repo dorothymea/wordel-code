@@ -1,6 +1,6 @@
 
 import { describe, expect, test } from 'vitest';
-import { computeGuess, LetterState } from './word-utils';
+import {computeGuess, isValidWord, LetterState} from './word-utils';
 
 describe('computeGuess', () => {
     test('works with match and presents', () => {
@@ -51,5 +51,12 @@ describe('computeGuess', () => {
             LetterState.Miss,
             LetterState.Present,
         ]);
+    });
+
+    test('not valid word', () => {
+        expect(isValidWord('aaaaa')).toEqual(false);
+    });
+    test('valid word', () => {
+        expect(isValidWord('stare')).toEqual(true);
     });
 });

@@ -1,7 +1,7 @@
 import WordRow from "./components/WordRow";
 import React, {useEffect, useRef, useState} from "react";
 import {useStore} from "./store";
-import {LETTER_LENGTH} from "./word-utils";
+import {isValidWord, LETTER_LENGTH} from "./word-utils";
 
 
 const NUMBER_OF_GUESS = 6
@@ -9,9 +9,35 @@ const NUMBER_OF_GUESS = 6
 function App() {
     const state = useStore()
     const [guess,setGuess] = useGuess()
+
+    const [showInvalidGuess,setInvalidGuess] = useState(false)
+    useEffect(()=>{
+        let id:any
+        if(showInvalidGuess){
+            id = setTimeout(()=>setInvalidGuess(false),1000)
+        }
+        return ()=> clearTimeout(id)
+    },[showInvalidGuess])
+
+    const addGuess = useStore(s => s.addGuess)
+    const preGuess = usePrevious(guess)
+    useEffect(()=>{
+        if(guess.length ===0 && preGuess?.length ===LETTER_LENGTH){
+            if(isValidWord(preGuess)){
+                setInvalidGuess(false)
+                addGuess(preGuess)
+            }else {
+                setInvalidGuess(true)
+                setGuess(preGuess)
+            }
+
+        }
+    },[guess])
+
     let rows = [...state.rows]
+    let curRow = 0
     if(rows.length < NUMBER_OF_GUESS ){
-        rows.push({guess})
+        curRow = rows.push({guess}) -1
     }
 
     const guessesRemaining = NUMBER_OF_GUESS - rows.length
@@ -26,7 +52,7 @@ function App() {
             </header>
             <main className="grid grid-rows-6 gap-4">
                 {rows.map(({guess,result},index)=>(
-                    <WordRow key={index} letters={guess} result = {result} />
+                    <WordRow key={index} letters={guess} result = {result} className={showInvalidGuess && index === curRow ? 'animate-bounce':''}/>
                 ))}
             </main>
             {isGameOver && (
@@ -44,10 +70,9 @@ function App() {
 }
 
 function useGuess(){
-    const addGuess = useStore(s => s.addGuess)
+
     const guessState = useState('')
     const [guess,setGuess] = guessState
-    const preGuess = usePrevious(guess)
 
     const onKeyDown = (e:KeyboardEvent)=>{
 
@@ -77,11 +102,7 @@ function useGuess(){
         }
     },[])
 
-    useEffect(()=>{
-        if(guess.length ===0 && preGuess?.length ===LETTER_LENGTH){
-            addGuess(preGuess)
-        }
-    },[guess])
+
 
     return guessState
 }
