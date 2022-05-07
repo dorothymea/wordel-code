@@ -47,7 +47,7 @@ function App() {
 
     return (
         <div  className="w-96 cell:w-90">
-            <header className="border-b border-gray-500 pb-2 my-2">
+            <header className="border-b border-gray-500 pb-2 my-2 cell:mt-0.5">
                 <h1 className="text-4xl text-center">Wordle </h1>
             </header>
             <main className="grid grid-rows-6 gap-4 pad:mt-5">
@@ -55,7 +55,7 @@ function App() {
                     <WordRow key={index} letters={guess} result = {result} className={showInvalidGuess && index === curRow ? 'animate-bounce':''}/>
                 ))}
             </main>
-            <div className="mt-0.5 pad:mt-4">
+            <div className="mt-0 pad:mt-4">
                 <Keyboard onClick = {(letter) => {
                     addGuessLetter(letter)
                 }}/>
