@@ -27,7 +27,7 @@ interface CharBoxProps {
 function CharBox ({value,state}:CharBoxProps){
     const stateStyles = state == null ? '' : charStateStyles[state]
     return(
-        <span className={`border-2 border border-gray-500 px-2  py-3 uppercase font-semibold text-4xl text-center before:inline-block before:content-['_'] ${stateStyles}`}>
+        <span className={`border-2 border border-gray-500 px-2  py-3 uppercase font-semibold text-4xl text-center before:inline-block before:content-['_'] ${stateStyles} cell:py-2`}>
             {value}
         </span>
     )

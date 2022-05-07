@@ -4,7 +4,6 @@ import {useStore} from "./store";
 import {isValidWord, LETTER_LENGTH} from "./word-utils";
 import Keyboard from "./components/Keyboard";
 
-
 const NUMBER_OF_GUESS = 6
 
 function App() {
@@ -47,16 +46,16 @@ function App() {
 
 
     return (
-        <div  className="mx-auto w-96">
+        <div  className="w-96 cell:w-90">
             <header className="border-b border-gray-500 pb-2 my-2">
                 <h1 className="text-4xl text-center">Wordle </h1>
             </header>
-            <main className="grid grid-rows-6 gap-4">
+            <main className="grid grid-rows-6 gap-4 pad:mt-5">
                 {rows.map(({guess,result},index)=>(
                     <WordRow key={index} letters={guess} result = {result} className={showInvalidGuess && index === curRow ? 'animate-bounce':''}/>
                 ))}
             </main>
-            <div className="mt-3">
+            <div className="mt-0.5 pad:mt-4">
                 <Keyboard onClick = {(letter) => {
                     addGuessLetter(letter)
                 }}/>
@@ -69,7 +68,7 @@ function App() {
                     <button
                         onClick={state.newGame}
                     className="block border rounded border-green-400 bg-green-400 p-2 mt-4 mx-auto shadow"
-                    >Try Again</button>
+                    >New Game</button>
                 </div>
             )}
             {state.gameState === 'win' && (
