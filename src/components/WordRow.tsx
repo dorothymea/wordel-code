@@ -1,17 +1,19 @@
-import {computeGuess, LetterState} from "../word-utils";
+import {computeGuess, LETTER_LENGTH, LetterState} from "../word-utils";
+import {useStore} from "../store";
 
-const LETTER_LENGTH = 5
+
 
 interface WordRowProps{
     letters:string
 }
 
 function WordRow({letters:lettersProp = ''}:WordRowProps) {
+    const answer = useStore(state => state.answer)
     const lettersRemaining = LETTER_LENGTH - lettersProp.length
     const letters = lettersProp
         .split('')
         .concat(Array(lettersRemaining).fill(''))
-    const guessState = computeGuess(lettersProp)
+    const guessState = computeGuess(lettersProp,answer)
 
     return (
         <div className="grid grid-cols-5 gap-4">

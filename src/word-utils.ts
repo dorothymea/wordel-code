@@ -1,6 +1,6 @@
 import wordBank from './word-bank.json'
 
-
+export const LETTER_LENGTH = 5
 export enum LetterState{
     Miss,
     Present,
@@ -12,7 +12,7 @@ function getRandomWord():string{
     return wordBank[Math.floor(Math.random() * wordBank.length)]
 }
 
-function computeGuess(guess:string,answer:string=word):LetterState[]{
+function computeGuess(guess:string,answer:string):LetterState[]{
     const result:LetterState[] = []
 
     if(guess.length !== answer.length){return result}
