@@ -9,7 +9,7 @@ const NUMBER_OF_GUESS = 6
 
 function App() {
     const state = useStore()
-    const [guess,setGuess] = useGuess()
+    const [guess,setGuess,addGuessLetter] = useGuess()
 
     const [showInvalidGuess,setInvalidGuess] = useState(false)
     useEffect(()=>{
@@ -56,7 +56,10 @@ function App() {
                     <WordRow key={index} letters={guess} result = {result} className={showInvalidGuess && index === curRow ? 'animate-bounce':''}/>
                 ))}
             </main>
-            <Keyboard/>
+            <Keyboard onClick = {(letter) => {
+                console.log(1)
+                addGuessLetter(letter)
+            }}/>
             {isGameOver && (
                 <div role="modal"
                 className="absolute bg-white rounded border border-gray-500 text-center left-0 right-0 top-1/4 p-6 w-1/2 mx-auto">
@@ -71,19 +74,16 @@ function App() {
     )
 }
 
-function useGuess(){
+function useGuess():[string,React.Dispatch<React.SetStateAction<string>>,(letter:string)=>void]{
 
-    const guessState = useState('')
-    const [guess,setGuess] = guessState
 
-    const onKeyDown = (e:KeyboardEvent)=>{
+    const [guess,setGuess] = useState('')
 
+    const addGuessLetter = (letter:string)=>{
         setGuess((curGuess)=>{
-            let letter = e.key
-
             const newGuess = letter.length === 1 && curGuess.length !== LETTER_LENGTH ? curGuess + letter : curGuess
 
-            switch (e.key){
+            switch (letter){
                 case 'Backspace':
                     return newGuess.slice(0,-1)
                 case 'Enter':
@@ -94,9 +94,11 @@ function useGuess(){
             if(newGuess.length === LETTER_LENGTH){return newGuess}
             return newGuess
         })
-
     }
-
+    const onKeyDown = (e:KeyboardEvent) => {
+        let letter = e.key
+        addGuessLetter(letter)
+    }
     useEffect(()=>{
         document.addEventListener('keydown',onKeyDown)
         return ()=>{
@@ -105,9 +107,9 @@ function useGuess(){
     },[])
 
 
-
-    return guessState
+    return [guess,setGuess,addGuessLetter]
 }
+
 function usePrevious<T>(value:T):T{
     const ref:any = useRef<T>()
 
