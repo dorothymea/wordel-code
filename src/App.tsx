@@ -18,14 +18,14 @@ function App() {
         }
         setGuess(newGuess)
     }
-    let rows = [...state.guesses]
+    let rows = [...state.rows]
     if(rows.length < NUMBER_OF_GUESS ){
-        rows.push(guess)
+        rows.push({guess})
     }
 
     const guessesRemaining = NUMBER_OF_GUESS - rows.length
     rows = rows.concat(Array(guessesRemaining).fill(''))
-    const isGameOver = state.guesses.length === NUMBER_OF_GUESS
+    const isGameOver = state.rows.length === NUMBER_OF_GUESS
 
 
     return (
@@ -43,8 +43,8 @@ function App() {
                 </div>
             </header>
             <main className="grid grid-rows-6 gap-4">
-                {rows.map((word,index)=>(
-                    <WordRow key={index} letters={word}/>
+                {rows.map(({guess,result},index)=>(
+                    <WordRow key={index} letters={guess} result = {result} />
                 ))}
             </main>
             {isGameOver && (
